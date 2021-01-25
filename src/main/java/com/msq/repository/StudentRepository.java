@@ -15,4 +15,6 @@ public interface StudentRepository extends JpaRepository<Student,Integer> {
     @Transactional
     @Modifying
     void updateStudent(String name,String number,int major, int sclass, int room, int bedid);
+
+
 }

@@ -30,4 +30,9 @@ public class StudentService {
     public void updateStudent(String name, String snumber, int major, int sclass, int room, int bedid) {
         this.studentRepository.updateStudent(name, snumber, major, sclass, room, bedid);
     }
+
+    public void deleteStudentByNumber(Student s) {
+
+        this.studentRepository.delete(s);
+    }
 }

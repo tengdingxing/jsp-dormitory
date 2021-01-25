@@ -10,9 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -261,13 +259,108 @@ public class StudentController {
     //删除学生信息，同时将该学生所住的床位状态设置为可用
     @GetMapping("/deleteStudent")
     @PreAuthorize("hasRole('admin')")
-    public String deleteStudent(@RequestParam("id")int id,Model model){
+    public String deleteStudent(@RequestParam("number")String number){
 
         //接受要删除学生的id
-        logger.info("要删除的学生id为：{}",id);
+        logger.info("要删除的学生的学号为：{}",number);
+        //将床位状态修改为0
+        Student studentByNumber = this.studentService.findStudentByNumber(number);
+        this.bedService.update(studentByNumber.getBedid(),"0");
+        //调用删除学生
+        this.studentService.deleteStudentByNumber(studentByNumber);
 
         return "redirect:/studentList";
     }
 
+    //根据学生姓名查询学生
+    @RequestMapping("/findStudentByNumber")
+    public String findStudentByNumber(@RequestParam("number")String number,Model model){
+
+        logger.info("要查找的学生学号为：{}",number);
+        Student s = this.studentService.findStudentByNumber(number);
+        if (s == null){
+           model.addAttribute("msg","用户不存在");
+        }else {
+
+            ShowStudent showStudent = new ShowStudent();
+            //设置名字
+            showStudent.setSname(s.getSname());
+            //设置学号
+            showStudent.setSnumber(s.getSnumber());
+            //设置性别
+            showStudent.setSex(s.getSex());
+            //设置专业
+            showStudent.setMajorname(this.majorService.findMajorById(s.getMajorid()).getMajorname());
+            //设置班级信息
+            showStudent.setClassname(this.sClassService.findById(s.getClassid()).getClassname());
+            //设置宿舍
+            Room roomById = this.roomService.findRoomById(s.getRoomid());
+            if (roomById == null){
+                showStudent.setRoomname("该学生未安排宿舍！");
+            }else {
+                showStudent.setRoomname(roomById.getName());
+            }
+            //设置床
+            Bed bed = this.bedService.findBedById(s.getBedid());
+            if (bed == null){
+                showStudent.setBedname("该学生没有床位！");
+            }else{
+                showStudent.setBedname(this.bedService.findBedById(s.getBedid()).getName());
+            }
+
+            List<ShowStudent> students = new ArrayList<>();
+            students.add(showStudent);
+            model.addAttribute("students",students);
+        }
+
+        return "list-student";
+    }
+
+    //发起审批，换宿舍，换班级，换专业
+    @GetMapping("/goReason")
+    //@PreAuthorize("hasRole('admin')")
+    public String goReason(Model model,@RequestParam("number")String number){
+
+        logger.info("发起审批的学生学号为，{}",number);
+
+        //通过学号查询学生id
+        Student s = this.studentService.findStudentByNumber(number);
+        ShowStudent showStudent = new ShowStudent();
+        //设置名字
+        showStudent.setSname(s.getSname());
+        //设置学号
+        showStudent.setSnumber(s.getSnumber());
+        //设置性别
+        showStudent.setSex(s.getSex());
+        //设置专业
+        showStudent.setMajorname(this.majorService.findMajorById(s.getMajorid()).getMajorname());
+        //设置班级信息
+        showStudent.setClassname(this.sClassService.findById(s.getClassid()).getClassname());
+        //设置宿舍
+        Room roomById = this.roomService.findRoomById(s.getRoomid());
+        if (roomById == null){
+            showStudent.setRoomname("该学生未安排宿舍！");
+        }else {
+            showStudent.setRoomname(roomById.getName());
+        }
+        //设置床
+        Bed bed = this.bedService.findBedById(s.getBedid());
+        if (bed == null){
+            showStudent.setBedname("该学生没有床位！");
+        }else{
+            showStudent.setBedname(this.bedService.findBedById(s.getBedid()).getName());
+        }
+
+        List<Room> allRoom = this.roomService.findAll();
+        List<SClass> classes = this.sClassService.findClasses();
+        List<Major> majorList = this.majorService.findAll();
+
+        model.addAttribute("student",showStudent);
+        model.addAttribute("rooms",allRoom);
+        model.addAttribute("majors",majorList);
+        model.addAttribute("classes",classes);
+
+        return "shenpi";
+    }
 
 }

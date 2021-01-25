@@ -116,23 +116,25 @@
 
     <div class="weadmin-body">
         <div class="layui-row">
-            <form class="layui-form layui-col-md12 we-search">
+            <form class="layui-form layui-col-md12 we-search" action="/findStudentByNumber" method="get">
                 姓名搜索：
                 <div class="layui-inline">
-                    <input type="text" name="username" placeholder="请输入用户名" autocomplete="off" class="layui-input" />
+                    <input type="text" name="number" placeholder="请输入学号" autocomplete="off" class="layui-input" />
                 </div>
 
                 <button class="layui-btn" lay-submit="" lay-filter="sreach">
-                    <i class="layui-icon layui-icon-search"></i>
+                   搜索
                 </button>
             </form>
         </div>
+
+        <h1 style="color: #FF5722">${msg}</h1>
+
         <div class="weadmin-block">
             <%--<button class="layui-btn layui-btn-danger" onclick="delAll()">
                 <i class="layui-icon layui-icon-delete"></i>删除
             </button>--%>
-            <button class="layui-btn" onclick="WeAdminShow('添加学生','/add',600,400)">
-                <i class="layui-icon layui-icon-add-circle-fine"></i>添加
+            <button class="layui-btn" onclick="WeAdminShow('添加学生','/add',600,400)">添加
             </button>
             <span class="fr" style="line-height:40px">共有数据：${fn:length(students)}  条</span>
         </div>
@@ -176,13 +178,13 @@
                     <%--<a onclick="member_stop(this,'10001')" href="javascript:;" title="审批"><span style="font-weight:bolder;color: #0000FF">发起审批</span>
 
                     </a>--%>
-                    <a title="新增" onclick="WeAdminEdit('审批','/goStudentEdit', 1, 600, 400)" >
+                    <a title="新增" onclick="WeAdminEdit('审批','/goReason?number=${ss.snumber}', 1, 600, 400)" >
                         <span style="font-weight:bolder;color: #0000FF">发起审批</span>
                     </a>
                     <a onclick="WeAdminShow('修改','/goStudentEdit?number=${ss.snumber}',600,400)" title="修改" >
                         <span style="font-weight:bolder;color: #0000FF">修改</span>
                     </a>
-                    <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
+                    <a title="删除"  href="/deleteStudent?number=${ss.snumber}">
                         <span style="font-weight:bolder;color: #0000FF">删除</span>
                     </a>
                 </td>
