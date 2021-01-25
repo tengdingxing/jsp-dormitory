@@ -179,7 +179,7 @@
                     <a title="新增" onclick="WeAdminEdit('审批','/goStudentEdit', 1, 600, 400)" >
                         <span style="font-weight:bolder;color: #0000FF">发起审批</span>
                     </a>
-                    <a onclick="WeAdminShow('修改','./password.html',600,400)" title="修改" href="javascript:;">
+                    <a onclick="WeAdminShow('修改','/goStudentEdit?number=${ss.snumber}',600,400)" title="修改" >
                         <span style="font-weight:bolder;color: #0000FF">修改</span>
                     </a>
                     <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">

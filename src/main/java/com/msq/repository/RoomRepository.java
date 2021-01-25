@@ -21,4 +21,9 @@ public interface RoomRepository extends JpaRepository<Room,Integer> {
     @Modifying
     @Query("update Room r set r.bedcount=?2 where r.name=?1 ")
     void update(String roomname,int count);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Room r set r.flag=?2 where r.name=?1")
+    void updateFlag(String roomname,String flag);
 }

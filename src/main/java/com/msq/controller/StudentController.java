@@ -134,8 +134,7 @@ public class StudentController {
         Room room1 = this.roomService.findRoomByName(room);
         if (room1 == null){
             model.addAttribute("msg","该宿舍不存在，请先添加宿舍");
-
-            return "add";
+            return "forward:/add";
         }
 
         student.setRoomid(room1.getId());
@@ -144,11 +143,11 @@ public class StudentController {
         Bed bedByRoomNameAndBedname = this.bedService.findBedByRoomNameAndBedname(room, bedname);
         if (bedByRoomNameAndBedname == null){
             model.addAttribute("msg","该床位未添加，请先添加床位");
-            return "add";
+            return "forward:/add";
         }
         if (bedByRoomNameAndBedname.getFlag() == "1"){
             model.addAttribute("msg","该床位已经被使用");
-            return "add";
+            return "forward:/add";
         }
         student.setBedid(bedByRoomNameAndBedname.getId());
 
@@ -156,15 +155,32 @@ public class StudentController {
         this.studentService.save(student);
         //添加成功后，更改床位状态
         this.bedService.update(bedByRoomNameAndBedname.getId(),"1");
+
+        //判断宿舍是否已经住满，住满则更改状态为不可用
+        Room roomByName = this.roomService.findRoomByName(room);
+        List<Bed> bedsByRoomName = this.bedService.findBedsByRoomName(room);
+        if (bedsByRoomName.size() >= roomByName.getBedcount()){
+            //更改宿舍状态为不可用
+            this.roomService.updateFlag(room,"1");
+        }
+
         return "redirect:/studentList";
     }
 
     //跳转到修改页面
     @GetMapping("/goStudentEdit")
-    public String goStudentEdit(Model model){
+    public String goStudentEdit(Model model,@RequestParam("number")String number){
+        logger.info("要修改的学生学号为，{}",number);
+
+        //通过学号查询学生id
+        Student studentByNumber = this.studentService.findStudentByNumber(number);
+        ShowStudent showStudent = new ShowStudent();
+        showStudent.setSnumber(studentByNumber.getSnumber());
+        showStudent.setSname(studentByNumber.getSname());
 
         return "student-edit";
     }
+
 
 
 }

@@ -8,6 +8,6 @@ public class TotalController {
 
     @GetMapping("/echarts6")
     public String goTotalPage(){
-        return "echarts6";
+        return "echarts";
     }
 }

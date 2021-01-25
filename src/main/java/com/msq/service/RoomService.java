@@ -38,4 +38,8 @@ public class RoomService {
     public void update(String roomname, int count) {
         this.roomRepository.update(roomname,count);
     }
+
+    public void updateFlag(String room, String flag) {
+        this.roomRepository.updateFlag(room,flag);
+    }
 }
