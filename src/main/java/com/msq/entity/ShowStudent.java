@@ -13,4 +13,7 @@ public class ShowStudent extends Student{
 
     private String bedname;
 
+    public ShowStudent(){
+
+    }
 }

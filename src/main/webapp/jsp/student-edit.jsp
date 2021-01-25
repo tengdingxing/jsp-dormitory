@@ -23,7 +23,7 @@
     <form class="layui-form" action="/addStudent" accept-charset="UTF-8">
 
       <div class="layui-form-item">
-        <label class="layui-form-label">Ñ§ºÅ</label>
+        <label class="layui-form-label">${student.snumber}</label>
         <div class="layui-input-block">
           <input type="text" name="snumber" required  lay-verify="required" placeholder="ÇëÊäÈëÑ§ºÅ" autocomplete="off" class="layui-input">
         </div>

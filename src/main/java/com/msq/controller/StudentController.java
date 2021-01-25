@@ -173,10 +173,34 @@ public class StudentController {
         logger.info("要修改的学生学号为，{}",number);
 
         //通过学号查询学生id
-        Student studentByNumber = this.studentService.findStudentByNumber(number);
+        Student s = this.studentService.findStudentByNumber(number);
         ShowStudent showStudent = new ShowStudent();
-        showStudent.setSnumber(studentByNumber.getSnumber());
-        showStudent.setSname(studentByNumber.getSname());
+        //设置名字
+        showStudent.setSname(s.getSname());
+        //设置学号
+        showStudent.setSnumber(s.getSnumber());
+        //设置性别
+        showStudent.setSex(s.getSex());
+        //设置专业
+        showStudent.setMajorname(this.majorService.findMajorById(s.getMajorid()).getMajorname());
+        //设置班级信息
+        showStudent.setClassname(this.sClassService.findById(s.getClassid()).getClassname());
+        //设置宿舍
+        Room roomById = this.roomService.findRoomById(s.getRoomid());
+        if (roomById == null){
+            showStudent.setRoomname("该学生未安排宿舍！");
+        }else {
+            showStudent.setRoomname(roomById.getName());
+        }
+        //设置床
+        Bed bed = this.bedService.findBedById(s.getBedid());
+        if (bed == null){
+            showStudent.setBedname("该学生没有床位！");
+        }else{
+            showStudent.setBedname(this.bedService.findBedById(s.getBedid()).getName());
+        }
+
+        model.addAttribute("student",showStudent);
 
         return "student-edit";
     }
