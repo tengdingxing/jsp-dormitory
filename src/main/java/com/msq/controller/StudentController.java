@@ -363,4 +363,17 @@ public class StudentController {
         return "shenpi";
     }
 
+    //进行审批提交
+    //修改学生
+    //@PreAuthorize("hasRole('admin')")
+    @PostMapping("/shenpi")
+    public String shenpi(@RequestParam("name")String name,@RequestParam("snumber")String snumber,
+                              @RequestParam("major") int major,@RequestParam("class")int sclass,@RequestParam("room")int room,
+                              @RequestParam("bedname") String bedname,@RequestParam("reason")String reason,Model model){
+        //tdxing，5171912134，1，1，5，A上，{}
+        logger.info("学生审批参数信息，{},{},{},{},{},{},{}",name,snumber,major,sclass,room,bedname,reason);
+
+
+        return "redirect:/index";
+    }
 }

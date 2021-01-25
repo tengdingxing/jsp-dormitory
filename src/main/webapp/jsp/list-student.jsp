@@ -178,7 +178,7 @@
                     <%--<a onclick="member_stop(this,'10001')" href="javascript:;" title="审批"><span style="font-weight:bolder;color: #0000FF">发起审批</span>
 
                     </a>--%>
-                    <a title="新增" onclick="WeAdminEdit('审批','/goReason?number=${ss.snumber}', 1, 600, 400)" >
+                    <a title="新增" onclick="WeAdminEdit('发起审批，申请更换（宿舍，专业，班级）','/goReason?number=${ss.snumber}', 800, 600)" >
                         <span style="font-weight:bolder;color: #0000FF">发起审批</span>
                     </a>
                     <a onclick="WeAdminShow('修改','/goStudentEdit?number=${ss.snumber}',600,400)" title="修改" >

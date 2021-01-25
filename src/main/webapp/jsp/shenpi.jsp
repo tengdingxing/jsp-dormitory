@@ -8,7 +8,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>修改学生</title>
+  <title>审批</title>
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport"
@@ -20,7 +20,7 @@
 <body>
 <h1><span style="color: red">${msg}</span></h1>
 <div class="weadmin-body">
-  <form class="layui-form" action="/editStudent" accept-charset="UTF-8" method="post">
+  <form class="layui-form" action="/shenpi" accept-charset="UTF-8" method="post">
 
     <div class="layui-form-item">
       <label class="layui-form-label">学号</label>
