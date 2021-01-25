@@ -20,29 +20,29 @@
 <body>
 <h1><span style="color: red">${msg}</span></h1>
   <div class="weadmin-body">
-    <form class="layui-form" action="/addStudent" accept-charset="UTF-8">
+    <form class="layui-form" action="/editStudent" accept-charset="UTF-8" method="post">
 
       <div class="layui-form-item">
-        <label class="layui-form-label">${student.snumber}</label>
+        <label class="layui-form-label">学号</label>
         <div class="layui-input-block">
-          <input type="text" name="snumber" required  lay-verify="required" placeholder="请输入学号" autocomplete="off" class="layui-input">
+          <input type="text" name="snumber" required readonly unselectable="on" value="${student.snumber}" lay-verify="required" placeholder="请输入学号" autocomplete="off" class="layui-input">
         </div>
       </div>
 
       <div class="layui-form-item">
         <label class="layui-form-label">姓名</label>
         <div class="layui-input-block">
-          <input type="text" name="name" required  lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+          <input type="text" name="name" required readonly unselectable="on" value="${student.sname}" lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
         </div>
       </div>
 
-      <div class="layui-form-item">
+ <%--     <div class="layui-form-item">
         <label class="layui-form-label">性别</label>
         <div class="layui-input-block">
           <input type="radio" name="sex" value="男" title="男">
           <input type="radio" name="sex" value="女" title="女" checked>
         </div>
-      </div>
+      </div>--%>
 
       <div class="layui-form-item">
         <label class="layui-form-label">专业</label>
@@ -82,7 +82,16 @@
       <div class="layui-form-item">
         <label class="layui-form-label">宿舍</label>
         <div class="layui-input-block">
-          <input type="text" name="room" required  lay-verify="required" placeholder="请输入宿舍号" autocomplete="off" class="layui-input">
+          <select name="room" lay-verify="required">
+
+            <c:forEach items="${rooms}" var="r">
+              <option value="${r.id}">${r.name}</option>
+              <%-- <option value="1">上海</option>
+               <option value="2">广州</option>
+               <option value="3">深圳</option>
+               <option value="4">杭州</option>--%>
+            </c:forEach>
+          </select>
         </div>
       </div>
 

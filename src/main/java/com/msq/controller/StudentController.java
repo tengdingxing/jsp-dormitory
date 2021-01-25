@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
@@ -168,6 +169,7 @@ public class StudentController {
     }
 
     //跳转到修改页面
+    @PreAuthorize("hasRole('admin')")
     @GetMapping("/goStudentEdit")
     public String goStudentEdit(Model model,@RequestParam("number")String number){
         logger.info("要修改的学生学号为，{}",number);
@@ -200,11 +202,72 @@ public class StudentController {
             showStudent.setBedname(this.bedService.findBedById(s.getBedid()).getName());
         }
 
+        List<Room> allRoom = this.roomService.findAll();
+        List<SClass> classes = this.sClassService.findClasses();
+        List<Major> majorList = this.majorService.findAll();
+
         model.addAttribute("student",showStudent);
+        model.addAttribute("rooms",allRoom);
+        model.addAttribute("majors",majorList);
+        model.addAttribute("classes",classes);
 
         return "student-edit";
     }
 
+
+    //修改学生
+    @PreAuthorize("hasRole('admin')")
+    @PostMapping("/editStudent")
+    public String editStudent(@RequestParam("name")String name,@RequestParam("snumber")String snumber,
+                              @RequestParam("major") int major,@RequestParam("class")int sclass,@RequestParam("room")int room,
+                              @RequestParam("bedname") String bedname,Model model){
+        //tdxing，5171912134，1，1，5，A上，{}
+        logger.info("修改学生信息，{}，{}，{}，{}，{}，{}",name,snumber,major,sclass,room,bedname);
+
+        //查询房间
+        Room roomById = this.roomService.findRoomById(room);
+        if (roomById == null){
+            model.addAttribute("msg","宿舍不存在");
+            return "forward:/goStudentEdit";
+        }
+        //根据房间号和床名查询床位的是否存在
+        Bed bedByRoomNameAndBedname = this.bedService.findBedByRoomNameAndBedname(roomById.getName(), bedname);
+        logger.info("bed,{}",bedByRoomNameAndBedname);
+        if (bedByRoomNameAndBedname == null){
+            model.addAttribute("msg","床位不存在");
+            return "forward:/goStudentEdit";
+        }
+        //得到床位id
+        int bedId = bedByRoomNameAndBedname.getId();
+        logger.info("bedid,{}",bedId);
+        //根据姓名学号修改学生信息
+        this.studentService.updateStudent(name,snumber,major,sclass,room,bedId);
+        logger.info("更新成功。。。");
+
+        //更新成功后修改床位状态
+       this.bedService.update(bedByRoomNameAndBedname.getId(),"1");
+
+        //判断宿舍是否已经住满，住满则更改状态为不可用
+        Room roomByName = this.roomService.findRoomById(room);
+        List<Bed> bedsByRoomName = this.bedService.findBedsByRoomName(roomByName.getName());
+        if (bedsByRoomName.size() >= roomByName.getBedcount()){
+            //更改宿舍状态为不可用
+            this.roomService.updateFlag(roomById.getName(),"1");
+        }
+
+        return "redirect:/studentList";
+    }
+
+    //删除学生信息，同时将该学生所住的床位状态设置为可用
+    @GetMapping("/deleteStudent")
+    @PreAuthorize("hasRole('admin')")
+    public String deleteStudent(@RequestParam("id")int id,Model model){
+
+        //接受要删除学生的id
+        logger.info("要删除的学生id为：{}",id);
+
+        return "redirect:/studentList";
+    }
 
 
 }

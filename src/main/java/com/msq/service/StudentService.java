@@ -26,4 +26,8 @@ public class StudentService {
     public Student findStudentByNumber(String snumber) {
         return this.studentRepository.findStudentBySnumber(snumber);
     }
+
+    public void updateStudent(String name, String snumber, int major, int sclass, int room, int bedid) {
+        this.studentRepository.updateStudent(name, snumber, major, sclass, room, bedid);
+    }
 }
