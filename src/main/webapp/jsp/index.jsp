@@ -87,7 +87,7 @@
             </li>
 
             <li class="layui-nav-item">
-                <a href="javascript:;">
+                <a href="/goShenPi">
                     <i  lay-tips="订单管理">&#xe63b;</i>
                     <cite>审批</cite>
                   </a>

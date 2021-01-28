@@ -1,7 +1,7 @@
 package com.msq.controller;
 
 import com.msq.entity.*;
-import com.msq.repository.MajorRepository;
+import com.msq.repository.ReasonRepository;
 import com.msq.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +29,9 @@ public class StudentController {
     private BedService bedService;
     @Autowired
     private RoomService roomService;
+
+    @Autowired
+    private ReasonRepository reasonRepository;
 
 
     //去到学生列表页面,查询学生信息，在列表中渲染出来
@@ -372,6 +375,21 @@ public class StudentController {
                               @RequestParam("bedname") String bedname,@RequestParam("reason")String reason,Model model){
         //tdxing，5171912134，1，1，5，A上，{}
         logger.info("学生审批参数信息，{},{},{},{},{},{},{}",name,snumber,major,sclass,room,bedname,reason);
+
+        //将信息添加到审批列表中
+        ShenPi shenPi = new ShenPi();
+        shenPi.setName(name);
+        shenPi.setNumber(snumber);
+        shenPi.setFlag("0");//未处理状态
+        shenPi.setBedname(bedname);
+        shenPi.setClassid(sclass);
+        shenPi.setMajorid(major);
+        shenPi.setRoomid(room);
+        shenPi.setReason(reason);
+
+        logger.info("shenpi,{}",shenPi);
+
+        this.reasonRepository.save(shenPi);
 
 
         return "redirect:/index";
