@@ -16,5 +16,10 @@ public interface StudentRepository extends JpaRepository<Student,Integer> {
     @Modifying
     void updateStudent(String name,String number,int major, int sclass, int room, int bedid);
 
+    @Query("update Student s set s.majorid=?2,s.classid=?3,s.roomid=?4,s.bedid=?5 where s.snumber=?1")
+    @Transactional
+    @Modifying
+    void updateShenPiStudent(String number,int major, int sclass, int room, int bedid);
+
 
 }

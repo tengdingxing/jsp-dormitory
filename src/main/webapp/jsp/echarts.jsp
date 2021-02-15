@@ -99,10 +99,6 @@
   <script type="text/javascript">
     // 基于准备好的dom，初始化echarts实例
 
-    //
-
-
-
     var chartDom = document.getElementById('main');
     var myChart = echarts.init(chartDom);
     var option;
@@ -145,7 +141,9 @@
             {value: 735, name: '直接访问'},
             {value: 580, name: '邮件营销'},
             {value: 484, name: '联盟广告'},
+            {value: 300, name: '视频广告'},
             {value: 300, name: '视频广告'}
+
           ]
         }
       ]

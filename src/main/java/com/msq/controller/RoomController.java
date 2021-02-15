@@ -62,7 +62,7 @@ public class RoomController {
     //按照宿舍名字搜索宿舍信息
     @GetMapping("/findRoomByName")
     public String findRoomByName(@RequestParam("name") String name, Model model) {
-        /*  *//**//*List<Room> roomByName = this.roomService.findRoomByNames(name);*/
+        /* List<Room> roomByName = this.roomService.findRoomByNames(name);*/
         Room room = this.roomService.findRoomByName(name);
         ShowRoom showRoom = new ShowRoom();
         showRoom.setName(room.getName());

@@ -116,7 +116,7 @@
 
     <div class="weadmin-body">
         <div class="layui-row">
-            <form class="layui-form layui-col-md12 we-search" action="/findStudentByNumber" method="get">
+          <%--  <form class="layui-form layui-col-md12 we-search" action="/findStudentByNumber" method="get">
                 姓名搜索：
                 <div class="layui-inline">
                     <input type="text" name="number" placeholder="请输入学号" autocomplete="off" class="layui-input" />
@@ -125,7 +125,8 @@
                 <button class="layui-btn" lay-submit="" lay-filter="sreach">
                    搜索
                 </button>
-            </form>
+            </form>--%>
+            <span>（备注 ：审批允许修改专业、班级、宿舍、床位）</span>
         </div>
 
         <h1 style="color: #FF5722">${msg}</h1>
@@ -134,8 +135,8 @@
             <%--<button class="layui-btn layui-btn-danger" onclick="delAll()">
                 <i class="layui-icon layui-icon-delete"></i>删除
             </button>--%>
-            <button class="layui-btn" onclick="WeAdminShow('添加学生','/add',600,400)">添加
-            </button>
+         <%--   <button class="layui-btn" onclick="WeAdminShow('添加学生','/add',600,400)">添加
+            </button>--%>
             <span class="fr" style="line-height:40px">共有数据：${fn:length(shenPiList)}  条</span>
         </div>
         <table class="layui-table" id="memberList">
@@ -181,10 +182,10 @@
 
                     </a>--%>
 
-                    <a title="删除"  href="/deleteSp?number=${sp.number}">
+                    <a title="同意"  href="/confirm?number=${sp.number}&&sid=${sp.sid}">
                         <span style="font-weight:bolder;color: #0000FF">批准</span>
                     </a>
-                    <a title="删除"  href="/deleteSp?number=${sp.number}">
+                    <a title="删除"  href="/deleteSp?number=${sp.number}&&sid=${sp.sid}">
                             <span style="font-weight:bolder;color: #0000FF">不批准</span>
                     </a>
                 </td>
